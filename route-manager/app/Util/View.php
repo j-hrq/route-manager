@@ -1,8 +1,15 @@
 <?php
 namespace App\Util;
 
-class View {
+class View {   
+
+    private static $vars = [];
     
+    public static function init($vars = []) {
+        self::$vars = $vars;
+    }
+
+
     /**
      * Método responsável por retornar o conteúdo de uma view.
      * @param string $view
@@ -10,7 +17,7 @@ class View {
      */
     private static function getContentView($view) {
         
-        $file = __DIR__.'./../../resources/view/'. $view .'.html';
+        $file = __DIR__.'/../../resources/view/'. $view .'.html';
         return file_exists($file) ? file_get_contents($file) : '';
 
     }
@@ -23,6 +30,8 @@ class View {
         
         // CONTEÚDO DA VIEW
         $contentView = self::getContentView($view);
+
+        $vars = array_merge(self::$vars, $vars);
         
         //CHAVES DA ARRAY
         $keys = array_keys($vars);
